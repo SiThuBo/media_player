@@ -1,0 +1,12 @@
+<%= form_with model: @post, local: true do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :media %>
+  <%= f.file_field :media %>
+
+  <%= f.label :media_type %>
+  <%= f.select :media_type, Post.media_types.keys.map { |type| [type.capitalize, type] } %>
+
+  <%= f.submit 'Create Post' %>
+<% end %>

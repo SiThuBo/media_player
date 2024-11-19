@@ -1,0 +1,15 @@
+<h1><%= @post.title %></h1>
+
+<% if @post.image? %>
+  <%= image_tag @post.media.url %>
+<% elsif @post.video? %>
+  <video controls>
+    <source src="<%= @post.media.url %>" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+<% elsif @post.audio? %>
+  <audio controls>
+    <source src="<%= @post.media.url %>" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+<% end %>
