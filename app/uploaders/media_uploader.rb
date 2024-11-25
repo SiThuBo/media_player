@@ -21,9 +21,20 @@ class MediaUploader < CarrierWave::Uploader::Base
   end
 
   def generate_video_thumb
-    movie = FFMPEG::Movie.new(file.path)
-    movie.screenshot(File.join(File.dirname(file.path), 'thumb.jpg'), seek_time: 5)
+    begin
+      movie = FFMPEG::Movie.new(file.path)
+      if movie.valid?
+        movie.screenshot(File.join(File.dirname(file.path), 'thumb.jpg'), seek_time: 5)
+      else
+        Rails.logger.error "Invalid video file: #{file.path}"
+        raise "Invalid video file"
+      end
+    rescue => e
+      Rails.logger.error "FFMPEG Error: #{e.message}"
+      raise "Could not process video: #{file.path}"
+    end
   end
+
 
   def resize_image
     # Resize using MiniMagick's resize_to_limit or resize_to_fill methods
